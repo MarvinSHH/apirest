@@ -9,4 +9,5 @@ export default {
   database: process.env.database || "",
   user: process.env.user || "",
   password: process.env.password || "",
+  port: process.env.port || 3306, // Asegúrate de incluir el puerto
 };
