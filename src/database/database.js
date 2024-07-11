@@ -8,6 +8,7 @@ const connection = mysql.createPool({
   database: config.database,
   user: config.user,
   password: config.password,
+  port: config.port, // el puerto esté incluido
   connectionLimit: 10, // Añade un límite de conexión
 });
 
