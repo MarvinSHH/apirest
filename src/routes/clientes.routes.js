@@ -11,7 +11,6 @@ router.get("/:idcliente", verifyToken, lenguageController.getCliente);
 router.delete("/:idcliente", verifyToken, lenguageController.DeleteCliente);
 router.post("/", verifyToken, lenguageController.addCliente);
 router.put("/:idcliente", verifyToken, lenguageController.updateCliente);
-
 router.post("/asignar", verifyToken, lenguageController.asignarClientes);
 router.get(
   "/repartidor/:idrepartidor",
@@ -22,6 +21,11 @@ router.delete(
   "/asignacion/:idcliente/:idrepartidor",
   verifyToken,
   lenguageController.eliminarAsignacionCliente
+);
+router.post(
+  "/confirmar-visita",
+  verifyToken,
+  lenguageController.confirmarVisita
 );
 
 export default router;
