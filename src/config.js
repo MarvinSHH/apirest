@@ -5,9 +5,9 @@ import { config } from "dotenv";
 config();
 
 export default {
-  host: process.env.host || "",
-  database: process.env.database || "",
-  user: process.env.user || "",
-  password: process.env.password || "",
-  port: process.env.port || 3306, // Asegúrate de incluir el puerto
+  host: process.env.DB_HOST || "",
+  database: process.env.DB_NAME || "",
+  user: process.env.DB_USER || "",
+  password: process.env.DB_PASSWORD || "",
+  port: process.env.DB_PORT || 3306, // Asegúrate de incluir el puerto
 };

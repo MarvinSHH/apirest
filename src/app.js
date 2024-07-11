@@ -14,7 +14,7 @@ import verifyToken from "./middleware/auth.middleware"; // Asegúrate de importa
 const app = express();
 
 //settings
-app.set("port", process.env.PORT || 3306);
+app.set("port", process.env.PORT || 4000);
 
 // Middlewares
 app.use(morgan("dev"));
