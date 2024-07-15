@@ -1,5 +1,4 @@
 //src/app.js
-
 import express from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
@@ -15,7 +14,7 @@ import verifyToken from "./middleware/auth.middleware"; // Asegúrate de importa
 const app = express();
 
 //settings
-app.set("port", 4000);
+app.set("port", process.env.PORT || 4000);
 
 // Middlewares
 app.use(morgan("dev"));

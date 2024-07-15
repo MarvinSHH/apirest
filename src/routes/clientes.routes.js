@@ -22,11 +22,5 @@ router.delete(
   verifyToken,
   lenguageController.eliminarAsignacionCliente
 );
-router.post(
-  "/confirmar-visita",
-  verifyToken,
-  lenguageController.confirmarVisita
-);
-router.put("/visitado/:idclientee", lenguageController.confirmarVisita);
 
 export default router;
