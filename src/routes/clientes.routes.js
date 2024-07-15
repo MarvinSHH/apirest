@@ -27,6 +27,6 @@ router.post(
   verifyToken,
   lenguageController.confirmarVisita
 );
-router.put("/visitado/:idcliente", lenguageController.confirmarVisita);
+router.put("/visitado/:idclientee", lenguageController.confirmarVisita);
 
 export default router;

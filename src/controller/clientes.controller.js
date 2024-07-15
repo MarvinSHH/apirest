@@ -252,5 +252,5 @@ export const methods = {
   eliminarAsignacionCliente,
   asignarCliente,
   asignarClientes,
-  confirmarVisita,
+  confirmarVisitas,
 };
