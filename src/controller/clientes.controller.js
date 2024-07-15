@@ -220,6 +220,26 @@ const eliminarAsignacionCliente = async (req, res) => {
       .json({ message: "Error al eliminar la asignación del cliente", error });
   }
 };
+// Confirmar visita
+const confirmarVisita = async (req, res) => {
+  try {
+    const { idcliente } = req.params;
+    const connection = await getConnection();
+    const result = await connection.query(
+      "UPDATE tblclientesasignadosarepartidores SET visitado = TRUE WHERE idcliente = ?",
+      [idcliente]
+    );
+    if (result.affectedRows > 0) {
+      res.json({ message: "Visita confirmada para el cliente: " + idcliente });
+    } else {
+      res.status(404).json({
+        message: "Cliente no encontrado o no asignado a este repartidor",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error al confirmar la visita", error });
+  }
+};
 
 export const methods = {
   getClientes,
@@ -231,4 +251,5 @@ export const methods = {
   eliminarAsignacionCliente,
   asignarCliente,
   asignarClientes,
+  confirmarVisita,
 };
