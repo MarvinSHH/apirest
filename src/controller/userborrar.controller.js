@@ -12,10 +12,10 @@ export const getUserData = async (req, res) => {
 
     if (type === "admin") {
       query =
-        "SELECT nombre, apaterno, amaterno, email, contrasenia FROM tbladmin WHERE idadmin = ?";
+        "SELECT nombre, apaterno, amaterno, email FROM tbladmin WHERE idadmin = ?";
     } else if (type === "repartidor") {
       query =
-        "SELECT nombre, apaterno, amaterno, email, contrasenia FROM tblrepartidor WHERE idrepartidor = ?";
+        "SELECT nombre, apaterno, amaterno, email FROM tblrepartidor WHERE idrepartidor = ?";
     } else {
       console.log("Tipo de usuario inválido");
       return res.status(400).json({ message: "Tipo de usuario inválido" });
@@ -44,29 +44,22 @@ export const getUserData = async (req, res) => {
 export const updateUserData = async (req, res) => {
   const { id } = req.params;
   const type = req.userType; // Utilizar el tipo de usuario del token decodificado
-  const { nombre, apaterno, amaterno, email, contrasenia } = req.body;
+  const { nombre, apaterno, amaterno, email } = req.body;
   try {
     const connection = await getConnection();
     let query = "";
 
     if (type === "admin") {
       query =
-        "UPDATE tbladmin SET nombre = ?, apaterno = ?, amaterno = ?, email = ?, contrasenia = ? WHERE idadmin = ?";
+        "UPDATE tbladmin SET nombre = ?, apaterno = ?, amaterno = ?, email = ? WHERE idadmin = ?";
     } else if (type === "repartidor") {
       query =
-        "UPDATE tblrepartidor SET nombre = ?, apaterno = ?, amaterno = ?, email = ?, contrasenia = ? WHERE idrepartidor = ?";
+        "UPDATE tblrepartidor SET nombre = ?, apaterno = ?, amaterno = ?, email = ? WHERE idrepartidor = ?";
     } else {
       return res.status(400).json({ message: "Tipo de usuario inválido" });
     }
 
-    await connection.query(query, [
-      nombre,
-      apaterno,
-      amaterno,
-      email,
-      contrasenia,
-      id,
-    ]);
+    await connection.query(query, [nombre, apaterno, amaterno, email, id]);
     res.json({ message: "Datos actualizados correctamente" });
   } catch (error) {
     console.error("Error al actualizar los datos del usuario:", error);

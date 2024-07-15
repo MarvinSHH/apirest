@@ -1,10 +1,11 @@
+// src/routes/user.routes.js
 import { Router } from "express";
 import { getUserData, updateUserData } from "../controller/user.controller";
 import verifyToken from "../middleware/auth.middleware";
 
 const router = Router();
 
-router.get("/:type/:id", verifyToken, getUserData);
-router.put("/:type/:id", verifyToken, updateUserData);
+router.get("/:id", verifyToken, getUserData);
+router.put("/:id", verifyToken, updateUserData);
 
 export default router;
