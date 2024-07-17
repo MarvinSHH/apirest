@@ -217,6 +217,8 @@ const obtenerRepartidoresConClientes = async (req, res) => {
         tblcliente c ON a.idcliente = c.idcliente
     `);
 
+    console.log("Resultado de la consulta:", result);
+
     const repartidores = {};
 
     result.forEach((row) => {
@@ -243,8 +245,12 @@ const obtenerRepartidoresConClientes = async (req, res) => {
       }
     });
 
-    res.json(Object.values(repartidores));
+    const resultadoFinal = Object.values(repartidores);
+    console.log("Resultado estructurado:", resultadoFinal);
+
+    res.json(resultadoFinal);
   } catch (error) {
+    console.error("Error al obtener repartidores con clientes:", error);
     res
       .status(500)
       .json({ message: "Error al obtener repartidores con clientes", error });
