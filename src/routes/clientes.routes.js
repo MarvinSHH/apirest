@@ -5,6 +5,11 @@ import { methods as lenguageController } from "../controller/clientes.controller
 import verifyToken from "../middleware/auth.middleware";
 
 const router = Router();
+router.get(
+  "/repartidores",
+  verifyToken,
+  lenguageController.obtenerRepartidoresConClientes
+);
 
 router.get("/", verifyToken, lenguageController.getClientes);
 router.get("/:idcliente", verifyToken, lenguageController.getCliente);
@@ -23,10 +28,5 @@ router.delete(
   lenguageController.eliminarAsignacionCliente
 );
 router.put("/visitado/:idcliente", lenguageController.confirmarVisita);
-router.get(
-  "/repartidores",
-  verifyToken,
-  lenguageController.obtenerRepartidoresConClientes
-);
 
 export default router;
