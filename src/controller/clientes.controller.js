@@ -200,6 +200,56 @@ const obtenerClientesAsignados = async (req, res) => {
       .json({ message: "Error al obtener clientes asignados", error });
   }
 };
+// Obtener todos los repartidores con sus clientes asignados EN PRUEBAAA
+const obtenerRepartidoresConClientes = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query(`
+      SELECT 
+        r.idrepartidor, r.nombre AS repartidor_nombre, r.apaterno AS repartidor_apaterno, r.amaterno AS repartidor_amaterno,
+        c.idcliente, c.nombre AS cliente_nombre, c.apaterno AS cliente_apaterno, c.amaterno AS cliente_amaterno,
+        c.direccion, c.qr, a.visitado
+      FROM 
+        tblrepartidor r
+      LEFT JOIN 
+        tblclientesasignadosarepartidores a ON r.idrepartidor = a.idrepartidor
+      LEFT JOIN 
+        tblcliente c ON a.idcliente = c.idcliente
+    `);
+
+    const repartidores = {};
+
+    result.forEach((row) => {
+      if (!repartidores[row.idrepartidor]) {
+        repartidores[row.idrepartidor] = {
+          idrepartidor: row.idrepartidor,
+          repartidor_nombre: row.repartidor_nombre,
+          repartidor_apaterno: row.repartidor_apaterno,
+          repartidor_amaterno: row.repartidor_amaterno,
+          clientes: [],
+        };
+      }
+
+      if (row.idcliente) {
+        repartidores[row.idrepartidor].clientes.push({
+          idcliente: row.idcliente,
+          cliente_nombre: row.cliente_nombre,
+          cliente_apaterno: row.cliente_apaterno,
+          cliente_amaterno: row.cliente_amaterno,
+          direccion: row.direccion,
+          qr: row.qr,
+          visitado: row.visitado,
+        });
+      }
+    });
+
+    res.json(Object.values(repartidores));
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener repartidores con clientes", error });
+  }
+};
 
 const eliminarAsignacionCliente = async (req, res) => {
   try {
@@ -252,4 +302,5 @@ export const methods = {
   asignarCliente,
   asignarClientes,
   confirmarVisita,
+  obtenerRepartidoresConClientes,
 };

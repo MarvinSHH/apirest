@@ -23,5 +23,10 @@ router.delete(
   lenguageController.eliminarAsignacionCliente
 );
 router.put("/visitado/:idcliente", lenguageController.confirmarVisita);
+router.get(
+  "/repartidores",
+  verifyToken,
+  lenguageController.obtenerRepartidoresConClientes
+);
 
 export default router;
