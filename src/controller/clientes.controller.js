@@ -177,7 +177,6 @@ const asignarCliente = async (req, res) => {
     res.status(500).json({ message: "Error al asignar cliente", error });
   }
 };
-
 // Asignar múltiples clientes a un repartidor
 // Asignar múltiples clientes a un repartidor
 const asignarClientes = async (req, res) => {
