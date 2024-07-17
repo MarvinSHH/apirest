@@ -150,10 +150,24 @@ const addCliente = async (req, res) => {
   }
 };
 // Asignar un cliente a un repartidor
+// Asignar un cliente a un repartidor
 const asignarCliente = async (req, res) => {
   try {
     const { idcliente, idrepartidor } = req.body;
     const connection = await getConnection();
+
+    // Verificar si el cliente ya está asignado a algún repartidor
+    const [rows] = await connection.query(
+      "SELECT * FROM tblclientesasignadosarepartidores WHERE idcliente = ?",
+      [idcliente]
+    );
+
+    if (rows.length > 0) {
+      return res
+        .status(400)
+        .json({ message: `El cliente ${idcliente} ya está asignado.` });
+    }
+
     const result = await connection.query(
       "INSERT INTO tblclientesasignadosarepartidores (idcliente, idrepartidor) VALUES (?, ?)",
       [idcliente, idrepartidor]
@@ -165,12 +179,25 @@ const asignarCliente = async (req, res) => {
 };
 
 // Asignar múltiples clientes a un repartidor
+// Asignar múltiples clientes a un repartidor
 const asignarClientes = async (req, res) => {
   try {
     const { idrepartidor, clientes } = req.body;
     const connection = await getConnection();
 
     for (const idcliente of clientes) {
+      // Verificar si el cliente ya está asignado a algún repartidor
+      const [rows] = await connection.query(
+        "SELECT * FROM tblclientesasignadosarepartidores WHERE idcliente = ?",
+        [idcliente]
+      );
+
+      if (rows.length > 0) {
+        return res
+          .status(400)
+          .json({ message: `El cliente ${idcliente} ya está asignado.` });
+      }
+
       await connection.query(
         "INSERT INTO tblclientesasignadosarepartidores (idcliente, idrepartidor) VALUES (?, ?)",
         [idcliente, idrepartidor]

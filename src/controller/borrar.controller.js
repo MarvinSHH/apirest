@@ -1,14 +1,13 @@
-//src/controller/repartidores.controller.js
-
+//src/controller/clientes.controller.js
 import { query } from "express";
 import { getConnection } from "./../database/database";
 
-//obtener todos los repartidores
-const getRepartidores = async (req, res) => {
+//obtener todos los cliente
+const getClientes = async (req, res) => {
   try {
     const connection = await getConnection();
     const result = await connection.query(
-      "SELECT idrepartidor, nombre, apaterno, amaterno, email, contrasenia, telefono, fotoperfil FROM tblrepartidor"
+      "SELECT idcliente, nombre, apaterno, amaterno, email, contrasenia, telefono, direccion, qr, fotoperfil, coordenadas, repartidorasignado FROM tblcliente"
     );
     res.json(result);
   } catch (error) {
@@ -16,15 +15,15 @@ const getRepartidores = async (req, res) => {
     res.send(error.message);
   }
 };
-//obtener un respartidor por ID
-const getRepartidor = async (req, res) => {
+//obtener un cliente por ID
+const getCliente = async (req, res) => {
   try {
     console.log(req.params);
-    const { idrepartidor } = req.params;
+    const { idcliente } = req.params;
     const connection = await getConnection();
     const result = await connection.query(
-      "SELECT idrepartidor, nombre, apaterno, amaterno, email, contrasenia, telefono, fotoperfil FROM tblrepartidor WHERE idrepartidor=?",
-      idrepartidor
+      "SELECT idcliente, nombre, apaterno, amaterno, email, contrasenia, telefono, direccion, qr, fotoperfil, coordenadas, repartidorasignado FROM tblcliente WHERE idcliente=?",
+      idcliente
     );
     res.json(result);
   } catch (error) {
@@ -33,15 +32,15 @@ const getRepartidor = async (req, res) => {
   }
 };
 
-//eliminar un repartidor
-const DeleteRepartidor = async (req, res) => {
+//eliminar un cliente
+const DeleteCliente = async (req, res) => {
   try {
     console.log(req.params);
-    const { idrepartidor } = req.params;
+    const { idcliente } = req.params;
     const connection = await getConnection();
     const result = await connection.query(
-      "DELETE FROM tblrepartidor WHERE idrepartidor=?",
-      idrepartidor
+      "DELETE FROM tblcliente WHERE idcliente=?",
+      idcliente
     );
     res.json(result);
   } catch (error) {
@@ -50,10 +49,10 @@ const DeleteRepartidor = async (req, res) => {
   }
 };
 
-//actualizar un repartidor
-const updateRepartidor = async (req, res) => {
+//actualizar un cliente
+const updateCliente = async (req, res) => {
   try {
-    const { idrepartidor } = req.params;
+    const { idcliente } = req.params;
     const {
       nombre,
       apaterno,
@@ -61,37 +60,40 @@ const updateRepartidor = async (req, res) => {
       email,
       contrasenia,
       telefono,
-      fotoperfil,
+      direccion,
+      qr,
     } = req.body;
 
     if (
-      idrepartidor == undefined ||
+      idcliente == undefined ||
       nombre == undefined ||
       apaterno == undefined ||
       amaterno == undefined ||
       email == undefined ||
       contrasenia == undefined ||
       telefono == undefined ||
-      fotoperfil == undefined
+      direccion == undefined ||
+      qr == undefined
     ) {
       res
         .status(400)
         .json({ message: " error, campos faltantes o incorrectos" });
     }
-    const repartidor = {
-      idrepartidor,
+    const cliente = {
+      idcliente,
       nombre,
       apaterno,
       amaterno,
       email,
       contrasenia,
       telefono,
-      fotoperfil,
+      direccion,
+      qr,
     };
     const connection = await getConnection();
     const result = await connection.query(
-      "UPDATE tblrepartidor SET ? WHERE idrepartidor=?",
-      [repartidor, idrepartidor]
+      "UPDATE tblcliente SET ? WHERE idcliente=?",
+      [cliente, idcliente]
     );
     res.json(result);
   } catch (error) {
@@ -100,11 +102,19 @@ const updateRepartidor = async (req, res) => {
   }
 };
 
-//agregar un repartidor
-const addRepartidor = async (req, res) => {
+//agregar un cliente
+const addCliente = async (req, res) => {
   try {
-    const { nombre, apaterno, amaterno, email, contrasenia, telefono } =
-      req.body;
+    const {
+      nombre,
+      apaterno,
+      amaterno,
+      email,
+      contrasenia,
+      telefono,
+      direccion,
+      qr,
+    } = req.body;
 
     if (
       nombre == undefined ||
@@ -112,34 +122,197 @@ const addRepartidor = async (req, res) => {
       amaterno == undefined ||
       email == undefined ||
       contrasenia == undefined ||
-      telefono == undefined
+      telefono == undefined ||
+      direccion == undefined ||
+      qr == undefined
     ) {
       res
         .status(400)
         .json({ message: " error, campos faltantes o incorrectos" });
     }
 
-    const repartidor = {
+    const cliente = {
       nombre,
       apaterno,
       amaterno,
       email,
       contrasenia,
       telefono,
+      direccion,
+      qr,
     };
     const connection = await getConnection();
-    await connection.query("INSERT INTO tblrepartidor SET ?", repartidor);
-    res.json({ message: "Repartidor agregado" });
+    await connection.query("INSERT INTO tblcliente SET ?", cliente);
+    res.json({ message: "cliente agregado" });
   } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 };
+// Asignar un cliente a un repartidor
+const asignarCliente = async (req, res) => {
+  try {
+    const { idcliente, idrepartidor } = req.body;
+    const connection = await getConnection();
+    const result = await connection.query(
+      "INSERT INTO tblclientesasignadosarepartidores (idcliente, idrepartidor) VALUES (?, ?)",
+      [idcliente, idrepartidor]
+    );
+    res.json({ message: "Cliente asignado exitosamente", result });
+  } catch (error) {
+    res.status(500).json({ message: "Error al asignar cliente", error });
+  }
+};
+
+// Asignar múltiples clientes a un repartidor
+const asignarClientes = async (req, res) => {
+  try {
+    const { idrepartidor, clientes } = req.body;
+    const connection = await getConnection();
+
+    for (const idcliente of clientes) {
+      await connection.query(
+        "INSERT INTO tblclientesasignadosarepartidores (idcliente, idrepartidor) VALUES (?, ?)",
+        [idcliente, idrepartidor]
+      );
+    }
+    res.json({ message: "Clientes asignados exitosamente" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al asignar clientes", error });
+  }
+};
+
+// Obtener clientes asignados a un repartidor
+const obtenerClientesAsignados = async (req, res) => {
+  try {
+    const { idrepartidor } = req.params;
+    const connection = await getConnection();
+    const result = await connection.query(
+      "SELECT c.idcliente, c.nombre, c.apaterno, c.amaterno, c.direccion, c.qr, a.visitado " +
+        "FROM tblcliente c JOIN tblclientesasignadosarepartidores a " +
+        "ON c.idcliente = a.idcliente WHERE a.idrepartidor = ?",
+      [idrepartidor]
+    );
+    res.json(result);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener clientes asignados", error });
+  }
+};
+// Obtener todos los repartidores con sus clientes asignados EN PRUEBAAA
+const obtenerRepartidoresConClientes = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query(`
+      SELECT 
+        r.idrepartidor, r.nombre AS repartidor_nombre, r.apaterno AS repartidor_apaterno, r.amaterno AS repartidor_amaterno,
+        c.idcliente, c.nombre AS cliente_nombre, c.apaterno AS cliente_apaterno, c.amaterno AS cliente_amaterno,
+        a.visitado
+      FROM 
+        tblrepartidor r
+      LEFT JOIN 
+        tblclientesasignadosarepartidores a ON r.idrepartidor = a.idrepartidor
+      LEFT JOIN 
+        tblcliente c ON a.idcliente = c.idcliente
+    `);
+
+    console.log("Resultado de la consulta:", result);
+
+    if (result.length === 0) {
+      console.log("No se encontraron repartidores con clientes asignados.");
+      return res.json([]);
+    }
+
+    const repartidores = {};
+
+    result.forEach((row) => {
+      if (!repartidores[row.idrepartidor]) {
+        repartidores[row.idrepartidor] = {
+          idrepartidor: row.idrepartidor,
+          repartidor_nombre: row.repartidor_nombre,
+          repartidor_apaterno: row.repartidor_apaterno,
+          repartidor_amaterno: row.repartidor_amaterno,
+          clientes: [],
+        };
+      }
+
+      if (row.idcliente) {
+        repartidores[row.idrepartidor].clientes.push({
+          idcliente: row.idcliente,
+          cliente_nombre: row.cliente_nombre,
+          cliente_apaterno: row.cliente_apaterno,
+          cliente_amaterno: row.cliente_amaterno,
+          visitado: row.visitado,
+        });
+      }
+    });
+
+    const resultadoFinal = Object.values(repartidores);
+    console.log(
+      "Resultado estructurado:",
+      JSON.stringify(resultadoFinal, null, 2)
+    );
+
+    res.json(resultadoFinal);
+  } catch (error) {
+    console.error("Error al obtener repartidores con clientes:", error);
+    res
+      .status(500)
+      .json({ message: "Error al obtener repartidores con clientes", error });
+  }
+};
+
+const eliminarAsignacionCliente = async (req, res) => {
+  try {
+    const { idcliente, idrepartidor } = req.params;
+    const connection = await getConnection();
+    const result = await connection.query(
+      "DELETE FROM tblclientesasignadosarepartidores WHERE idcliente = ? AND idrepartidor = ?",
+      [idcliente, idrepartidor]
+    );
+    if (result.affectedRows > 0) {
+      res.json({ message: "Cliente asignado eliminado correctamente" });
+    } else {
+      res.status(404).json({ message: "Cliente asignado no encontrado" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al eliminar la asignación del cliente", error });
+  }
+};
+// Confirmar visita
+const confirmarVisita = async (req, res) => {
+  try {
+    const { idcliente } = req.params;
+    const connection = await getConnection();
+    const result = await connection.query(
+      "UPDATE tblclientesasignadosarepartidores SET visitado = TRUE WHERE idcliente = ?",
+      [idcliente]
+    );
+    if (result.affectedRows > 0) {
+      res.json({ message: "Visita confirmada para el cliente: " + idcliente });
+    } else {
+      res.status(404).json({
+        message: "Cliente no encontrado o no asignado a este repartidor",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error al confirmar la visita", error });
+  }
+};
 
 export const methods = {
-  getRepartidores,
-  getRepartidor,
-  addRepartidor,
-  DeleteRepartidor,
-  updateRepartidor,
+  getClientes,
+  getCliente,
+  DeleteCliente,
+  updateCliente,
+  addCliente,
+  obtenerClientesAsignados,
+  eliminarAsignacionCliente,
+  asignarCliente,
+  asignarClientes,
+  confirmarVisita,
+  obtenerRepartidoresConClientes,
 };
