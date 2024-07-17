@@ -208,7 +208,7 @@ const obtenerRepartidoresConClientes = async (req, res) => {
       SELECT 
         r.idrepartidor, r.nombre AS repartidor_nombre, r.apaterno AS repartidor_apaterno, r.amaterno AS repartidor_amaterno,
         c.idcliente, c.nombre AS cliente_nombre, c.apaterno AS cliente_apaterno, c.amaterno AS cliente_amaterno,
-        c.direccion, c.qr, a.visitado
+        a.visitado
       FROM 
         tblrepartidor r
       LEFT JOIN 
@@ -218,6 +218,11 @@ const obtenerRepartidoresConClientes = async (req, res) => {
     `);
 
     console.log("Resultado de la consulta:", result);
+
+    if (result.length === 0) {
+      console.log("No se encontraron repartidores con clientes asignados.");
+      return res.json([]);
+    }
 
     const repartidores = {};
 
@@ -238,15 +243,16 @@ const obtenerRepartidoresConClientes = async (req, res) => {
           cliente_nombre: row.cliente_nombre,
           cliente_apaterno: row.cliente_apaterno,
           cliente_amaterno: row.cliente_amaterno,
-          direccion: row.direccion,
-          qr: row.qr,
           visitado: row.visitado,
         });
       }
     });
 
     const resultadoFinal = Object.values(repartidores);
-    console.log("Resultado estructurado:", resultadoFinal);
+    console.log(
+      "Resultado estructurado:",
+      JSON.stringify(resultadoFinal, null, 2)
+    );
 
     res.json(resultadoFinal);
   } catch (error) {
