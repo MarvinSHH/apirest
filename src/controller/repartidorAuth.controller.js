@@ -3,7 +3,16 @@ import bcrypt from "bcryptjs";
 import { getConnection } from "../database/database";
 
 const registerRepartidor = async (req, res) => {
-  const { nombre, apaterno, amaterno, email, contrasenia, telefono } = req.body;
+  const {
+    nombre,
+    apaterno,
+    amaterno,
+    email,
+    contrasenia,
+    telefono,
+    pregunta_secreta,
+    respuesta_secreta,
+  } = req.body;
   try {
     const connection = await getConnection();
     const result = await connection.query(
