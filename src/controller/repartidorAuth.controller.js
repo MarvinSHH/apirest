@@ -7,8 +7,17 @@ const registerRepartidor = async (req, res) => {
   try {
     const connection = await getConnection();
     const result = await connection.query(
-      "INSERT INTO tblrepartidor (nombre, apaterno, amaterno, email, contrasenia, telefono) VALUES (?, ?, ?, ?, ?, ?)",
-      [nombre, apaterno, amaterno, email, contrasenia, telefono]
+      "INSERT INTO tblrepartidor (nombre, apaterno, amaterno, email, contrasenia, telefono, pregunta_secreta, respuesta_secreta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        nombre,
+        apaterno,
+        amaterno,
+        email,
+        contrasenia,
+        telefono,
+        pregunta_secreta,
+        respuesta_secreta,
+      ]
     );
     res
       .status(201)
