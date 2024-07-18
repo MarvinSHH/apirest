@@ -28,6 +28,6 @@ app.use("/api/repartidorAuth", repartidorAuthRoutes); // registra repartidor
 app.use("/api/repartidores", verifyToken, repartidoresRoutes);
 app.use("/api/clientes", verifyToken, clientesRoutes);
 app.use("/api/user", verifyToken, userRoutes); // Usa las nuevas rutas
-app.use("/api/recuperar", verifyToken, recuperacionContrasenia);
+app.use("/api/recuperar", recuperacionContrasenia);
 
 export default app;
