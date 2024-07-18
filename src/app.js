@@ -9,6 +9,7 @@ import repartidorAuthRoutes from "./routes/repartidorAuth.routes";
 import repartidoresRoutes from "./routes/repartidores.routes";
 import clientesRoutes from "./routes/clientes.routes";
 import userRoutes from "./routes/user.routes"; // Importa las nuevas rutas
+import recuperacionContrasenia from "./routes/recuperacionContrasenia.routes";
 import verifyToken from "./middleware/auth.middleware"; // Asegúrate de importar el middleware
 
 const app = express();
@@ -27,5 +28,6 @@ app.use("/api/repartidorAuth", repartidorAuthRoutes); // registra repartidor
 app.use("/api/repartidores", verifyToken, repartidoresRoutes);
 app.use("/api/clientes", verifyToken, clientesRoutes);
 app.use("/api/user", verifyToken, userRoutes); // Usa las nuevas rutas
+app.use("/api/recuperar", verifyToken, recuperacionContrasenia);
 
 export default app;
