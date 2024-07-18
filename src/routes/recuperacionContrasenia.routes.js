@@ -1,7 +1,7 @@
 //src/routes/recuperacionContrasenia.routes.js
 
 import { Router } from "express";
-import { methods as recuperarController } from "../controller/recuperar.controller";
+import { methods as recuperarController } from "../controller/recuperacionContraenia.controller";
 
 const router = Router();
 
