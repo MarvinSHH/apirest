@@ -181,7 +181,6 @@ const asignarClientes = async (req, res) => {
     res.status(500).json({ message: "Error al asignar clientes", error });
   }
 };
-
 // Obtener clientes asignados a un repartidor
 const obtenerClientesAsignados = async (req, res) => {
   try {

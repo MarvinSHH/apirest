@@ -170,6 +170,20 @@ const asignarClientes = async (req, res) => {
     const { idrepartidor, clientes } = req.body;
     const connection = await getConnection();
 
+    // Verificar si los clientes ya están asignados
+    for (const idcliente of clientes) {
+      const [existingAssignment] = await connection.query(
+        "SELECT * FROM tblclientesasignadosarepartidores WHERE idcliente = ?",
+        [idcliente]
+      );
+      if (existingAssignment) {
+        return res.status(400).json({
+          message: `El cliente con ID ${idcliente} ya está asignado a un repartidor.`,
+        });
+      }
+    }
+
+    // Asignar los clientes
     for (const idcliente of clientes) {
       await connection.query(
         "INSERT INTO tblclientesasignadosarepartidores (idcliente, idrepartidor) VALUES (?, ?)",
