@@ -5,9 +5,6 @@ import { methods as repartidorAuthController } from "../controller/repartidorAut
 const router = Router();
 
 router.post("/register", repartidorAuthController.registerRepartidor);
-router.post(
-  "/recuperarContrasenia",
-  repartidorAuthController.recuperarContrasenia
-);
+router.post("/verificarCorreo", repartidorAuthController.recuperarContrasenia);
 
 export default router;
