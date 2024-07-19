@@ -94,16 +94,8 @@ const updateRepartidor = async (req, res) => {
 //agregar un repartidor
 const addRepartidor = async (req, res) => {
   try {
-    const {
-      nombre,
-      apaterno,
-      amaterno,
-      email,
-      contrasenia,
-      telefono,
-      pregunta_secreta,
-      respuesta_secreta,
-    } = req.body;
+    const { nombre, apaterno, amaterno, email, contrasenia, telefono } =
+      req.body;
 
     if (
       nombre == undefined ||
@@ -111,9 +103,7 @@ const addRepartidor = async (req, res) => {
       amaterno == undefined ||
       email == undefined ||
       contrasenia == undefined ||
-      telefono == undefined ||
-      pregunta_secreta == undefined ||
-      respuesta_secreta == undefined
+      telefono == undefined
     ) {
       res
         .status(400)
@@ -127,8 +117,6 @@ const addRepartidor = async (req, res) => {
       email,
       contrasenia,
       telefono,
-      pregunta_secreta,
-      respuesta_secreta,
     };
     const connection = await getConnection();
     await connection.query("INSERT INTO tblrepartidor SET ?", repartidor);
