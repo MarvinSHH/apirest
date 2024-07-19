@@ -23,6 +23,26 @@ const verificarCorreo = async (req, res) => {
     );
 
     if (result.length > 0) {
+      res.status(200).json({ success: true, message: "Correo encontrado" });
+    } else {
+      res.status(404).json({ success: false, message: "Correo no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error del servidor" });
+  }
+};
+
+// Enviar codigo de verificación
+const EnviarCodigo = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const connection = await getConnection();
+    const result = await connection.query(
+      "SELECT email FROM tblrepartidor WHERE email = ?",
+      [email]
+    );
+
+    if (result.length > 0) {
       // Generar un código de verificación
       const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
@@ -71,5 +91,6 @@ const cambiarContrasenia = async (req, res) => {
 };
 export const methods = {
   verificarCorreo,
+  EnviarCodigo,
   cambiarContrasenia,
 };
