@@ -1,6 +1,6 @@
 //src/controller/recuperacionContrasenia.controller.js
 
-import { getConnection } from "./../database/database";
+import { getConnection } from "../database/database";
 import nodemailer from "nodemailer";
 
 // Configurar el transporte de nodemailer

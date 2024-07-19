@@ -9,7 +9,7 @@ import repartidorAuthRoutes from "./routes/repartidorAuth.routes";
 import repartidoresRoutes from "./routes/repartidores.routes";
 import clientesRoutes from "./routes/clientes.routes";
 import userRoutes from "./routes/user.routes"; // Importa las nuevas rutas
-import recuperacionContrasenia from "./routes/recuperacionContrasenia.routes";
+import recuperacionContrasenia from "./routes/enviarCodigo";
 import verifyToken from "./middleware/auth.middleware"; // Asegúrate de importar el middleware
 
 const app = express();
