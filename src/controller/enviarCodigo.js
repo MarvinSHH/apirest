@@ -45,7 +45,31 @@ const verificarCorreo = async (req, res) => {
     res.status(500).json({ success: false, message: "Error del servidor" });
   }
 };
+// Cambiar la contraseña
+const cambiarContrasenia = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+    const connection = await getConnection();
+    const result = await connection.query(
+      "UPDATE tblrepartidor SET contrasenia = ? WHERE email = ?",
+      [newPassword, email]
+    );
 
+    if (result.affectedRows > 0) {
+      res.status(200).json({
+        success: true,
+        message: "Contraseña actualizada correctamente.",
+      });
+    } else {
+      res
+        .status(404)
+        .json({ success: false, message: "Correo no encontrado." });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error del servidor" });
+  }
+};
 export const methods = {
   verificarCorreo,
+  cambiarContrasenia,
 };
