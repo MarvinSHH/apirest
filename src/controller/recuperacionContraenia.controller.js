@@ -7,8 +7,8 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: "tu-correo@gmail.com",
-    pass: "tu-contraseña",
+    user: "purificadoralosreyes32@gmail.com",
+    pass: "qwerty123?",
   },
 });
 
@@ -28,7 +28,7 @@ const verificarCorreo = async (req, res) => {
 
       // Enviar el código de verificación por correo electrónico
       const mailOptions = {
-        from: "tu-correo@gmail.com",
+        from: "purificadoralosreyes32@gmail.com",
         to: email,
         subject: "Código de verificación",
         text: `Tu código de verificación es ${verificationCode}`,
