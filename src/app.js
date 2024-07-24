@@ -30,6 +30,5 @@ app.use("/api/clientes", verifyToken, clientesRoutes);
 app.use("/api/resetVisita");
 app.use("/api/user", verifyToken, userRoutes); // Usa las nuevas rutas
 app.use("/api/recuperar", recuperacionContrasenia);
-app.use("/api/visita", resetVisitaRoutes);
 
 export default app;
