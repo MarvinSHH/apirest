@@ -28,5 +28,6 @@ router.delete(
   lenguageController.eliminarAsignacionCliente
 );
 router.put("/visitado/:idcliente", lenguageController.confirmarVisita);
+router.put("/resetVisitado", clienteController.resetVisitado);
 
 export default router;

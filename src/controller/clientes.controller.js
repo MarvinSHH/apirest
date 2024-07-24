@@ -316,6 +316,19 @@ const confirmarVisita = async (req, res) => {
   }
 };
 
+// Resetear estado de visitado
+const resetVisitado = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query(
+      "UPDATE tblclientesasignadosarepartidores SET visitado = FALSE"
+    );
+    res.json({ message: "Visit status reset successfully" });
+  } catch (error) {
+    res.status(400).json({ message: "Error resetting visit status", error });
+  }
+};
+
 export const methods = {
   getClientes,
   getCliente,
@@ -328,4 +341,5 @@ export const methods = {
   asignarClientes,
   confirmarVisita,
   obtenerRepartidoresConClientes,
+  resetVisitado,
 };
