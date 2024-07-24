@@ -11,7 +11,7 @@ import clientesRoutes from "./routes/clientes.routes";
 import userRoutes from "./routes/user.routes"; // Importa las nuevas rutas
 import recuperacionContrasenia from "./routes/enviarCodigo.routes";
 import verifyToken from "./middleware/auth.middleware"; // Asegúrate de importar el middleware
-import resetVisitaRoutes from "./routes/resetVisita.routes";
+import visitRoutes from "./routes/resetVisita.routes";
 const app = express();
 
 //settings
@@ -27,8 +27,8 @@ app.use("/api/auth", authRoutes); //inicia sesion admin/repartidor y registra ad
 app.use("/api/repartidorAuth", repartidorAuthRoutes); // registra repartidor
 app.use("/api/repartidores", verifyToken, repartidoresRoutes);
 app.use("/api/clientes", verifyToken, clientesRoutes);
-app.use("/api/resetVisita");
 app.use("/api/user", verifyToken, userRoutes); // Usa las nuevas rutas
 app.use("/api/recuperar", recuperacionContrasenia);
+app.use("/api/visita", resetVisitaRoutes);
 
 export default app;
