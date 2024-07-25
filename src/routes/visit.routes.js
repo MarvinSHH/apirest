@@ -5,5 +5,5 @@ import { methods as lenguageController } from "../controller/visitad.controller"
 import verifyToken from "../middleware/auth.middleware";
 
 const router = Router();
-router.put("/resetVisitado", lenguageController.resetVisitado);
+router.put("/resetVisitado", verifyToken, lenguageController.resetVisitado);
 export default router;
