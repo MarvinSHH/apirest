@@ -305,14 +305,19 @@ const confirmarVisita = async (req, res) => {
       [idcliente]
     );
     if (result.affectedRows > 0) {
-      res.json({ message: "Visita confirmada para el cliente: " + idcliente });
+      res.json({
+        message: "MSJ API Visita confirmada para el cliente: " + idcliente,
+      });
     } else {
       res.status(404).json({
-        message: "Cliente no encontrado o no asignado a este repartidor",
+        message:
+          "MSJ API Cliente no encontrado o no asignado a este repartidor",
       });
     }
   } catch (error) {
-    res.status(500).json({ message: "Error al confirmar la visita", error });
+    res
+      .status(500)
+      .json({ message: "MSJ API Error al confirmar la visita", error });
   }
 };
 
