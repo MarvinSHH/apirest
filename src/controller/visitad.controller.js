@@ -8,10 +8,12 @@ const resetVisitado = async (req, res) => {
     const result = await connection.query(
       "UPDATE tblclientesasignadosarepartidores SET visitado = 0"
     );
-    res.json({ message: "Visit status reset successfully", result });
+    res.json({ message: "MSJ API Visit status reset successfully", result });
   } catch (error) {
-    console.error("Error resetting visit status:", error);
-    res.status(500).json({ message: "Error resetting visit status", error });
+    console.error("MSJ API Error resetting visit status:", error);
+    res
+      .status(500)
+      .json({ message: "MSJ API Error resetting visit status", error });
   }
 };
 export const methods = {
