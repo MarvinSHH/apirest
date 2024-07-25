@@ -6,16 +6,19 @@ const resetVisitado = async (req, res) => {
   try {
     const connection = await getConnection();
     const result = await connection.query(
-      "UPDATE tblclientesasignadosarepartidores SET visitado = 0"
+      "UPDATE tblclientesasignadosarepartidores SET visitado = 0 WHERE visitado != 0"
     );
-    res.json({ message: "MSJ API Visit status reset successfully", result });
+    res.json({
+      message: "Visit status reset successfully",
+      result,
+      affectedRows: result.affectedRows, // Include affected rows in response
+    });
   } catch (error) {
-    console.error("MSJ API Error resetting visit status:", error);
-    res
-      .status(500)
-      .json({ message: "MSJ API Error resetting visit status", error });
+    console.error("Error resetting visit status:", error);
+    res.status(500).json({ message: "Error resetting visit status", error });
   }
 };
+
 export const methods = {
   resetVisitado,
 };
