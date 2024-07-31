@@ -12,6 +12,7 @@ import userRoutes from "./routes/user.routes"; // Importa las nuevas rutas
 import recuperacionContrasenia from "./routes/enviarCodigo.routes";
 import verifyToken from "./middleware/auth.middleware"; // Asegúrate de importar el middleware
 import visitRoutes from "./routes/visit.routes";
+import imgRoutes from "./routes/img.routes";
 const app = express();
 
 //settings
@@ -31,5 +32,6 @@ app.use("/api/clientes", verifyToken, clientesRoutes);
 app.use("/api/user", verifyToken, userRoutes); // Usa las nuevas rutas
 app.use("/api/recuperar", recuperacionContrasenia);
 app.use("/api/visita", visitRoutes);
+app.use("/api/img", imgRoutes);
 
 export default app;
