@@ -343,7 +343,7 @@ const uploadFoto = async (req, res) => {
 
     const connection = await getConnection();
     const result = await connection.query(
-      "UPDATE tblcliente SET foto = ? WHERE idcliente = ?",
+      "UPDATE tblclientesasignadosarepartidores SET foto = ? WHERE idcliente = ?",
       [fotoUrl, idcliente]
     );
     res.json({ message: "Foto subida exitosamente", fotoUrl });
