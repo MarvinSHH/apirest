@@ -1,7 +1,7 @@
 //src/controller/clientes.controller.js
 import { query } from "express";
-import multer from "multer";
 import path from "path";
+const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../config/cloudinary");
 
@@ -326,7 +326,7 @@ const confirmarVisita = async (req, res) => {
   }
 };
 //--------------------------INICIO FOTOGRAFIA-----------------------------------------------------
-// Configuración de multer
+// Configuración de multer para usar Cloudinary
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -336,7 +336,7 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage }).single("foto");
+const upload = multer({ storage });
 
 // Función para manejar la subida de la foto
 const uploadFoto = async (req, res) => {

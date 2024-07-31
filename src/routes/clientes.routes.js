@@ -3,7 +3,7 @@
 import { Router } from "express";
 import { methods as lenguageController } from "../controller/clientes.controller";
 import verifyToken from "../middleware/auth.middleware";
-import multer from "multer";
+const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../config/cloudinary");
 
@@ -19,7 +19,7 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage }).single("foto");
+const upload = multer({ storage });
 
 //----------------FIN FOTOGRAFIA-------------------------
 //
