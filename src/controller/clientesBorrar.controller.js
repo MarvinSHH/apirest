@@ -1,7 +1,5 @@
 //src/controller/clientes.controller.js
 import { query } from "express";
-import multer from "multer";
-import path from "path";
 import { getConnection } from "./../database/database";
 
 //obtener todos los cliente
@@ -322,36 +320,6 @@ const confirmarVisita = async (req, res) => {
       .json({ message: "MSJ API Error al confirmar la visita", error });
   }
 };
-//--------------------------INICIO FOTOGRAFIA-----------------------------------------------------
-// Configuración de multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  },
-});
-
-const upload = multer({ storage }).single("foto");
-
-// Función para manejar la subida de la foto
-const uploadFoto = async (req, res) => {
-  try {
-    const { idcliente } = req.body;
-    const fotoUrl = `/uploads/${req.file.filename}`;
-
-    const connection = await getConnection();
-    const result = await connection.query(
-      "UPDATE tblcliente SET foto = ? WHERE idcliente = ?",
-      [fotoUrl, idcliente]
-    );
-    res.json({ message: "Foto subida exitosamente", fotoUrl });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-};
-//--------------------------FIN FOTOGRAFIA-----------------------------------------------------
 
 export const methods = {
   getClientes,
@@ -365,5 +333,4 @@ export const methods = {
   asignarClientes,
   confirmarVisita,
   obtenerRepartidoresConClientes,
-  uploadFoto,
 };

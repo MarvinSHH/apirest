@@ -22,6 +22,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
+app.use("/uploads", express.static("uploads")); // Permitir acceso a la carpeta uploads
 
 app.use("/api/auth", authRoutes); //inicia sesion admin/repartidor y registra admin
 app.use("/api/repartidorAuth", repartidorAuthRoutes); // registra repartidor

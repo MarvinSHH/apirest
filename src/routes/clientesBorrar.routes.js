@@ -3,23 +3,8 @@
 import { Router } from "express";
 import { methods as lenguageController } from "../controller/clientes.controller";
 import verifyToken from "../middleware/auth.middleware";
-import multer from "multer";
 
 const router = Router();
-
-//----------------INICIO FOTOGRAFIA-----------------------
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}_${file.originalname}`);
-    },
-  }),
-});
-//----------------FIN FOTOGRAFIA-------------------------
-//
 router.get(
   "/repartidores",
   verifyToken,
@@ -43,11 +28,5 @@ router.delete(
   lenguageController.eliminarAsignacionCliente
 );
 router.put("/visitado/:idcliente", lenguageController.confirmarVisita);
-router.post(
-  "/upload",
-  verifyToken,
-  upload.single("foto"),
-  lenguageController.uploadFoto
-);
 
 export default router;
