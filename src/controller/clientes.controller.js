@@ -2,6 +2,9 @@
 import { query } from "express";
 import multer from "multer";
 import path from "path";
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
+
 import { getConnection } from "./../database/database";
 
 //obtener todos los cliente
@@ -324,12 +327,12 @@ const confirmarVisita = async (req, res) => {
 };
 //--------------------------INICIO FOTOGRAFIA-----------------------------------------------------
 // Configuración de multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}_${file.originalname}`);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "uploads",
+    format: async (req, file) => "jpg", // Puedes cambiar esto según el formato deseado
+    public_id: (req, file) => `${Date.now()}_${file.originalname}`,
   },
 });
 
@@ -339,7 +342,7 @@ const upload = multer({ storage }).single("foto");
 const uploadFoto = async (req, res) => {
   try {
     const { idcliente } = req.body;
-    const fotoUrl = `/uploads/${req.file.filename}`;
+    const fotoUrl = req.file.path; // Cloudinary proporciona la URL en file.path
 
     const connection = await getConnection();
     const result = await connection.query(
@@ -348,9 +351,11 @@ const uploadFoto = async (req, res) => {
     );
     res.json({ message: "Foto subida exitosamente", fotoUrl });
   } catch (error) {
+    console.error("Error en el servidor:", error.message);
     res.status(500).send(error.message);
   }
 };
+
 //--------------------------FIN FOTOGRAFIA-----------------------------------------------------
 
 export const methods = {

@@ -4,20 +4,23 @@ import { Router } from "express";
 import { methods as lenguageController } from "../controller/clientes.controller";
 import verifyToken from "../middleware/auth.middleware";
 import multer from "multer";
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
 const router = Router();
 
 //----------------INICIO FOTOGRAFIA-----------------------
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}_${file.originalname}`);
-    },
-  }),
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "uploads",
+    format: async (req, file) => "jpg", // Puedes cambiar esto según el formato deseado
+    public_id: (req, file) => `${Date.now()}_${file.originalname}`,
+  },
 });
+
+const upload = multer({ storage }).single("foto");
+
 //----------------FIN FOTOGRAFIA-------------------------
 //
 router.get(
