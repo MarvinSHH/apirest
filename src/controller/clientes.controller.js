@@ -201,7 +201,7 @@ const obtenerClientesAsignados = async (req, res) => {
     const { idrepartidor } = req.params;
     const connection = await getConnection();
     const result = await connection.query(
-      "SELECT c.idcliente, c.nombre, c.apaterno, c.amaterno, c.direccion, c.qr, a.visitado " +
+      "SELECT c.idcliente, c.nombre, c.apaterno, c.amaterno, c.direccion, c.qr, c.foto, a.visitado " +
         "FROM tblcliente c JOIN tblclientesasignadosarepartidores a " +
         "ON c.idcliente = a.idcliente WHERE a.idrepartidor = ?",
       [idrepartidor]
