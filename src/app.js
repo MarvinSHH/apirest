@@ -14,6 +14,8 @@ import verifyToken from "./middleware/auth.middleware"; // Asegúrate de importa
 import visitRoutes from "./routes/visit.routes";
 import imgRoutes from "./routes/img.routes";
 import historialRoutes from "./routes/historial.routes";
+import cronRoutes from "./routes/cron.routes"; // Importa la ruta del cron
+
 const app = express();
 
 //settings
@@ -35,7 +37,6 @@ app.use("/api/recuperar", recuperacionContrasenia);
 app.use("/api/visita", visitRoutes);
 app.use("/api/img", imgRoutes);
 app.use("/api/historial", verifyToken, historialRoutes);
-
-require("./resetDaily");
+app.use("/api/cron", cronRoutes); // Usa la ruta del cron
 
 export default app;
