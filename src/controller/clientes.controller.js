@@ -301,7 +301,7 @@ const confirmarVisita = async (req, res) => {
     const { idcliente } = req.params;
     const connection = await getConnection();
     const result = await connection.query(
-      "UPDATE tblclientesasignadosarepartidores SET visitado = TRUE WHERE idcliente = ?",
+      "UPDATE tblclientesasignadosarepartidores SET visitado = TRUE, historia = NOW() WHERE idcliente = ?",
       [idcliente]
     );
     if (result.affectedRows > 0) {

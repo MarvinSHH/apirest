@@ -201,7 +201,7 @@ const obtenerClientesAsignados = async (req, res) => {
     const { idrepartidor } = req.params;
     const connection = await getConnection();
     const result = await connection.query(
-      "SELECT c.idcliente, c.nombre, c.apaterno, c.amaterno, c.direccion, c.qr, a.visitado " +
+      "SELECT c.idcliente, c.nombre, c.apaterno, c.amaterno, c.direccion, c.qr, a.foto, a.visitado " +
         "FROM tblcliente c JOIN tblclientesasignadosarepartidores a " +
         "ON c.idcliente = a.idcliente WHERE a.idrepartidor = ?",
       [idrepartidor]
@@ -320,6 +320,20 @@ const confirmarVisita = async (req, res) => {
       .json({ message: "MSJ API Error al confirmar la visita", error });
   }
 };
+// Obtener todos los clientes asignados
+const obtenerTodosClientesAsignados = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query(
+      "SELECT idcliente FROM tblclientesasignadosarepartidores"
+    );
+    res.json(result);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener clientes asignados", error });
+  }
+};
 
 export const methods = {
   getClientes,
@@ -333,4 +347,5 @@ export const methods = {
   asignarClientes,
   confirmarVisita,
   obtenerRepartidoresConClientes,
+  obtenerTodosClientesAsignados,
 };
