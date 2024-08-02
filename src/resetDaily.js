@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { getConnection } from "./src/database/database";
+import { getConnection } from "./database/database";
 
 // Programa la tarea para que se ejecute cada minuto (para pruebas)
 cron.schedule("* * * * *", async () => {
@@ -19,7 +19,7 @@ console.log(
   "Tarea programada para reiniciar datos cada minuto (para pruebas)."
 );
 import cron from "node-cron";
-import { getConnection } from "./src/database/database";
+import { getConnection } from "./database/database";
 
 // Programa la tarea para que se ejecute cada minuto (para pruebas)
 cron.schedule("* * * * *", async () => {
