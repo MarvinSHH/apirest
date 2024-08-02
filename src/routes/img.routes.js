@@ -19,11 +19,6 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 
 // Ruta para subir la foto
-router.post(
-  "/upload",
-  verifyToken,
-  upload.single("foto"),
-  lenguageController.uploadFoto
-);
+router.post("/upload", upload.single("foto"), lenguageController.uploadFoto);
 
 export default router;
