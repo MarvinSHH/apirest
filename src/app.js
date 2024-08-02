@@ -36,6 +36,6 @@ app.use("/api/visita", visitRoutes);
 app.use("/api/img", imgRoutes);
 app.use("/api/historial", verifyToken, historialRoutes);
 
-import "./resetDaily.js";
+require("./resetDaily");
 
 export default app;
