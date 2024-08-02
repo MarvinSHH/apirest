@@ -34,6 +34,6 @@ app.use("/api/user", verifyToken, userRoutes); // Usa las nuevas rutas
 app.use("/api/recuperar", recuperacionContrasenia);
 app.use("/api/visita", visitRoutes);
 app.use("/api/img", imgRoutes);
-app.use("api/historial", verifyToken, historialRoutes);
+app.use("/api/historial", verifyToken, historialRoutes);
 
 export default app;
