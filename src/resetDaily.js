@@ -1,4 +1,4 @@
-import cron from "node-cron";
+const cron = require("node-cron");
 import { getConnection } from "./database/database";
 
 // Programa la tarea para que se ejecute cada minuto (para pruebas)
