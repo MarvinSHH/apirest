@@ -8,7 +8,6 @@ const login = async (req, res) => {
     const connection = await getConnection();
     console.log("Connected to database");
 
-    // Verificar en tbladmin
     let rows = await connection.query(
       "SELECT * FROM tbladmin WHERE email = ?",
       [email]
@@ -22,7 +21,6 @@ const login = async (req, res) => {
       user = rows[0];
       role = "admin";
     } else {
-      // Si no se encuentra en tbladmin, verificar en tblrepartidor
       rows = await connection.query(
         "SELECT * FROM tblrepartidor WHERE email = ?",
         [email]
@@ -42,7 +40,6 @@ const login = async (req, res) => {
         .json({ message: "Email or password is incorrect" });
     }
 
-    // Comparar contraseñas directamente para depuración
     if (contrasenia !== user.contrasenia) {
       console.log("Invalid password for email:", email);
       return res
@@ -56,7 +53,7 @@ const login = async (req, res) => {
       { expiresIn: "1h" }
     );
     console.log("Token generated:", token);
-    res.json({ token, userType: role });
+    res.json({ token, userType: role, id: user.idadmin || user.idrepartidor });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });

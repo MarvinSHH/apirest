@@ -49,8 +49,8 @@ const login = async (req, res) => {
 
     const token = jwt.sign(
       { id: user.idadmin || user.idrepartidor, role },
-      "your_jwt_secret",
-      { expiresIn: "1h" }
+      "your_jwt_secret"
+      //{ expiresIn: "1h" }
     );
     console.log("Token generated:", token);
     res.json({ token, userType: role, id: user.idadmin || user.idrepartidor });
