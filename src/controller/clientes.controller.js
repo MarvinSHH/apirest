@@ -299,10 +299,18 @@ const eliminarAsignacionCliente = async (req, res) => {
 const confirmarVisita = async (req, res) => {
   try {
     const { idcliente } = req.params;
+
+    // Obtener la fecha y hora actual en el lado del servidor
+    const now = new Date();
+
+    // Formatear la fecha y hora a la zona horaria deseada (opcional)
+    const offset = -5.0; // Zona horaria de México Central (CST) es UTC-5 en horario estándar
+    const localTime = new Date(now.getTime() + offset * 3600 * 1000);
+
     const connection = await getConnection();
     const result = await connection.query(
-      "UPDATE tblclientesasignadosarepartidores SET visitado = TRUE, historia = NOW() WHERE idcliente = ?",
-      [idcliente]
+      "UPDATE tblclientesasignadosarepartidores SET visitado = TRUE, historia = ? WHERE idcliente = ?",
+      [localTime, idcliente]
     );
     if (result.affectedRows > 0) {
       res.json({
