@@ -1,6 +1,7 @@
 //src/controller/clientes.controller.js
 import { query } from "express";
 import { getConnection } from "./../database/database";
+const moment = require("moment-timezone");
 
 //obtener todos los cliente
 const getClientes = async (req, res) => {
@@ -300,18 +301,13 @@ const confirmarVisita = async (req, res) => {
   try {
     const { idcliente } = req.params;
 
-    const now = new Date();
-    const offset = -6; // UTC-6
-    const localDate = new Date(now.getTime() + offset * 60 * 60 * 1000);
-    const formattedDate = localDate
-      .toISOString()
-      .slice(0, 19)
-      .replace("T", " ");
+    // Obtener la fecha y hora actual en la zona horaria UTC-6
+    const now = moment().tz("Etc/GMT+6").format("YYYY-MM-DD HH:mm:ss");
 
     const connection = await getConnection();
     const result = await connection.query(
       "UPDATE tblclientesasignadosarepartidores SET visitado = TRUE, historia = ? WHERE idcliente = ?",
-      [formattedDate, idcliente]
+      [now, idcliente]
     );
     if (result.affectedRows > 0) {
       res.json({
