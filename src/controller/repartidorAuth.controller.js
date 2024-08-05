@@ -6,23 +6,10 @@ const registerRepartidor = async (req, res) => {
   const { nombre, apaterno, amaterno, email, contrasenia, telefono } = req.body;
   try {
     const connection = await getConnection();
-
-    // Verificar si el correo electrónico ya está registrado
-    const [existingUser] = await connection.query(
-      "SELECT * FROM tblrepartidor WHERE email = ?",
-      [email]
-    );
-
-    if (existingUser.length > 0) {
-      return res.status(400).json({ message: "El correo ya está registrado" });
-    }
-
-    // Si el correo no está registrado, proceder con el registro
     const result = await connection.query(
       "INSERT INTO tblrepartidor (nombre, apaterno, amaterno, email, contrasenia, telefono) VALUES (?, ?, ?, ?, ?, ?)",
       [nombre, apaterno, amaterno, email, contrasenia, telefono]
     );
-
     res
       .status(201)
       .json({ message: "Repartidor registrado exitosamente", result });
