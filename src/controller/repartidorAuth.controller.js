@@ -13,7 +13,11 @@ const registerRepartidor = async (req, res) => {
       [email]
     );
 
+    console.log("Verificando correo:", email);
+    console.log("Resultado de verificación:", existingRepartidor);
+
     if (existingRepartidor.length > 0) {
+      console.log("Correo ya registrado:", email);
       return res.status(400).json({ message: "El correo ya está registrado" });
     }
 
@@ -29,11 +33,10 @@ const registerRepartidor = async (req, res) => {
       .status(201)
       .json({ message: "Repartidor registrado exitosamente", result });
   } catch (error) {
-    console.error(error);
+    console.error("Error al registrar repartidor:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 const recuperarContrasenia = async (req, res) => {
   const { email, preguntaSecreta, respuestaSecreta, nuevaContrasenia } =
     req.body;
