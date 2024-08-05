@@ -5,6 +5,8 @@ import { getConnection } from "../database/database";
 const registerRepartidor = async (req, res) => {
   const { nombre, apaterno, amaterno, email, contrasenia, telefono } = req.body;
   try {
+    const connection = await getConnection();
+
     // Verificar si el correo ya existe en tblrepartidor
     const [existingRepartidor] = await connection.query(
       "SELECT * FROM tblrepartidor WHERE email = ?",
@@ -14,11 +16,15 @@ const registerRepartidor = async (req, res) => {
     if (existingRepartidor.length > 0) {
       return res.status(400).json({ message: "El correo ya está registrado" });
     }
-    const connection = await getConnection();
+
+    // Hashear la contraseña antes de guardarla
+    const hashedPassword = await bcrypt.hash(contrasenia, 10);
+
     const result = await connection.query(
       "INSERT INTO tblrepartidor (nombre, apaterno, amaterno, email, contrasenia, telefono) VALUES (?, ?, ?, ?, ?, ?)",
-      [nombre, apaterno, amaterno, email, contrasenia, telefono]
+      [nombre, apaterno, amaterno, email, hashedPassword, telefono]
     );
+
     res
       .status(201)
       .json({ message: "Repartidor registrado exitosamente", result });
@@ -27,6 +33,7 @@ const registerRepartidor = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const recuperarContrasenia = async (req, res) => {
   const { email, preguntaSecreta, respuestaSecreta, nuevaContrasenia } =
     req.body;
