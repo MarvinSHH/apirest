@@ -33,6 +33,7 @@ const registerRepartidor = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const recuperarContrasenia = async (req, res) => {
   const { email, preguntaSecreta, respuestaSecreta, nuevaContrasenia } =
     req.body;
