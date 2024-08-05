@@ -9,7 +9,7 @@ const registerRepartidor = async (req, res) => {
 
     // Verificar si el correo ya existe
     const [existingUser] = await connection.query(
-      "SELECT * FROM tbladmin WHERE email = ?",
+      "SELECT * FROM tblrepartidor WHERE email = ?",
       [email]
     );
 
