@@ -1,4 +1,4 @@
-//src/controller/repartidorAuth.controller.js
+// src/controller/repartidorAuth.controller.js
 import bcrypt from "bcryptjs";
 import { getConnection } from "../database/database";
 
@@ -33,7 +33,6 @@ const registerRepartidor = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 const recuperarContrasenia = async (req, res) => {
   const { email, preguntaSecreta, respuestaSecreta, nuevaContrasenia } =
     req.body;
